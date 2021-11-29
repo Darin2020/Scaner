@@ -6,7 +6,6 @@ using NorthwindEntitiesLib;
 
 namespace Scanner
 {
-
     public class Presenter
     {
         private readonly IScanner _viewScaner;
@@ -35,20 +34,33 @@ namespace Scanner
 
         private void _view_ButtonAddClick(object sender, EventArgs e)
         {
-            short? add = (short?)_viewScaner.QuantityAdd;
-            int productId = _viewScaner.ProductId;
-            _fileManager.QuantityAdd(add, productId);
-            RefreshForm();
+            try
+            {
+                short? add = (short?)_viewScaner.QuantityAdd;
+                int productId = _viewScaner.ProductId;
+                if (add != 0)
+                {
+                    _fileManager.QuantityAdd(add, productId);
+                    RefreshForm();
+                }
+                else
+                {
+                    _messegeServece.ShowMessage("You did not specify the quantity of the product.");
+                }
+            }
+            catch(Exception ex)
+            {
+                _messegeServece.ShowError(ex.Message);
+            }
         }
 
         private void _view_ButtonOkClick(object sender, EventArgs e)
         {
             try
-            {
-                var IsExist = _fileManager.IsExist(_viewScaner.ProductId);
-                if (IsExist)
-                {
-                    Product product = _fileManager.GetProductById(_viewScaner.ProductId);
+            {                
+                Product product = _fileManager.GetProductById(_viewScaner.ProductId);
+                if (product != null)
+                {                    
                     _viewScaner.ProductName1 = product.ProductName;
                     _viewScaner.UnitPrice = product.UnitPrice;
                     _viewScaner.QuantityPerUnit = product.QuantityPerUnit;
@@ -56,7 +68,7 @@ namespace Scanner
                 }
                 else
                 {
-                    _messegeServece.ShowMessage("There is no such product");
+                    _messegeServece.ShowMessage("There is no such product.");
                 }
             }
             catch (Exception ex)
