@@ -14,6 +14,9 @@ namespace NorthwindContextLib
         public DbSet<Product> Products { get; set; }
         public DbSet<Shipper> Shippers { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<Delivery> Delivery { get; set; }
+        
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,6 +77,7 @@ namespace NorthwindContextLib
             modelBuilder.Entity<Supplier>()
             .HasMany(s => s.Products)
             .WithOne(p => p.Supplier);
+            
         }
         protected override void OnConfiguring(
         DbContextOptionsBuilder optionsBuilder)

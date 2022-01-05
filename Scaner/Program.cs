@@ -19,9 +19,13 @@ namespace Scanner
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Scanner form = new Scanner();
-            Presenter presenter = new Presenter(form);
-            Application.Run(form);
+            Authentication authenticationForm = new Authentication();
+            if (authenticationForm.ShowDialog() == DialogResult.OK)
+            {
+                Scanner form = new Scanner();
+                Presenter presenter = new Presenter(form);
+                Application.Run(form);
+            }
         }
     }
 }
